@@ -1,27 +1,20 @@
 #ifndef TEXT_H_INCLUDED
 #define TEXT_H_INCLUDED
 
-#include "font.h"
 #include <string>
 #define CENTER 0
 #define LEFT 1
 #define RIGHT 2
 
 
-const std::string DEFAULT_FONT_PATH = "default.font";
 
 class Text {
 public:
-	Font font;
 	int align;
 	std::string text;
 	int y;
 
-	Text(): font(Font(DEFAULT_FONT_PATH)) {};
-	Text(std::string _text, Font _font, int _align, int _y): text(_text), font(_font), align(_align), y(_y){}; 
-	void setFont(Font _font) {
-		font = _font;
-	}
+	Text(std::string _text, int _align, int _y): text(_text), align(_align), y(_y){};
 
 	void setAlign(int _align) {
 		align = _align;

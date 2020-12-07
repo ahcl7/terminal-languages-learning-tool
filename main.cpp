@@ -4,7 +4,6 @@
 #include "dictionary.h"
 #include "collection.h"
 #include "paragraphview.h"
-#include "font.h"
 #include "text.h"
 #include "history.h"
 #include "evaluate.h"
@@ -18,8 +17,8 @@
 #include <algorithm>
 #include <unistd.h>
 #include <sstream>
-#include<ios>      
-#include<limits>  
+#include<ios>
+#include<limits>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -32,12 +31,6 @@ string getDataPath(string language) { return "./data/" + language + "/data.txt";
 string getHistoryPath(string language) { return "./data/" + language + "/history.txt"; }
 string getCollectionPath(string language) { return "./data/" + language + "/collection.txt"; }
 
-
-const Font DEFAULT_FONT = Font("./fonts/default.font");
-const Font HUGE_FONT = Font("./fonts/huge.font", false);
-const Font MEDIUM_FONT = Font("./fonts/medium.font", false);
-const Font SMALL_FONT = Font("./fonts/small.font", false);
-const Font BIG_FONT = Font("./fonts/big.font", false);
 
 void showMenu() {
 	cout << "Choose command: " << endl;
@@ -54,7 +47,7 @@ void clearScreen() {
 }
 
 
-	
+
 void showDictionary(Dictionary& dictionary) {
 	cout << dictionary << endl;
 }
@@ -137,33 +130,33 @@ void addWord(Dictionary& dictionary, History &history, Setting& setting) {
 	cout << "Word " << GREEN << word << RESET <<" is added!"  << endl;
 	if (Utils::getNumberOfSingleWord(word) == 1) {
 		Utils::downloadPronouceFile(word);
-	} 
+	}
 
 }
 
 void displayWord(Word& word, string type) {
-	clearScreen();	
+	clearScreen();
 	int y = Terminal::getHeight() / 2;
 	if (type == "1") {
-		Text wordText = Text(word.word, DEFAULT_FONT, CENTER, y);
+		Text wordText = Text(word.word, CENTER, y);
 		wordText.display();
 	}
 	if (type == "2") {
-		Text meaningText = Text(word.meaning, DEFAULT_FONT, CENTER, y );
+		Text meaningText = Text(word.meaning, CENTER, y );
 		meaningText.display();
 	}
 	if (type == "3") {
 		for(auto example:word.examples) {
-			Text sText = Text(example.sentence, DEFAULT_FONT, CENTER, y ++);
-			Text mText = Text(example.meaning, DEFAULT_FONT, CENTER, y ++); y++;
+			Text sText = Text(example.sentence, CENTER, y ++);
+			Text mText = Text(example.meaning, CENTER, y ++); y++;
 			sText.highlight(word.word, "\033[34m");
 			sText.display();
 			mText.display();
 		}
 	}
 	if (type == "4") {
-		Text meaningText = Text(word.pronounce, DEFAULT_FONT, CENTER, y );
-		meaningText.display();	
+		Text meaningText = Text(word.pronounce, CENTER, y );
+		meaningText.display();
 	}
 }
 
@@ -280,7 +273,7 @@ void changeSetting(Dictionary& dictionary, History& history, Collection& collect
 				} else {
 					cout << RED << "Invalid value!" << RESET << endl;
 				}
-			} 
+			}
 			if (param == "lrate") {
 				double value; ss >> value;
 				if (value >= 0 && value < 1.0) {
