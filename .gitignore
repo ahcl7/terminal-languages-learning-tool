@@ -1,7 +1,6 @@
 *
 !*.cpp
 !*.h
-!*.font
 !fonts
 !makefile
 !README.md
