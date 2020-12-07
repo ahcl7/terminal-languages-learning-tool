@@ -32,7 +32,7 @@ std::string Utils::toUpperCase(std::string s) {
 			s[i] = s[i] - 'a' + 'A';
 		}
 	}
-	return s;
+	return s;	
 }
 
 std::string Utils::trim(std::string s) {
@@ -57,7 +57,7 @@ void Utils::downloadPronouceFile(std::string word) {
 	stringstream ss;
 	ss << "wget https://ssl.gstatic.com/dictionary/static/sounds/oxford/";
 	ss << word;
-	ss << "--_gb_1.mp3 -P ./pronounces";
+	ss << "--_gb_1.mp3 -P ./procounces";
 	system(ss.str().c_str());
 }
 
@@ -83,74 +83,74 @@ bool Utils::isUpperCase(char c) {
 
 
 void mapping() {
-	// ma['á'] = 'a';
-	// ma['à'] = 'a';
-	// ma['ả'] = 'a';
-	// ma['ã'] = 'a';
-	// ma['ạ'] = 'a';
-	// ma['ă'] = 'a';
-	// ma['ắ'] = 'a';
-	// ma['ằ'] = 'a';
-	// ma['ẳ'] = 'a';
-	// ma['ẵ'] = 'a';
-	// ma['ặ'] = 'a';
-	// ma['â'] = 'a';
-	// ma['ấ'] = 'a';
-	// ma['ầ'] = 'a';
-	// ma['ẩ'] = 'a';
-	// ma['ẫ'] = 'a';
-	// ma['ậ'] = 'a';
-	// ma['é'] = 'e';
-	// ma['è'] = 'e';
-	// ma['ẻ'] = 'e';
-	// ma['ẽ'] = 'e';
-	// ma['ẹ'] = 'e';
-	// ma['ê'] = 'e';
-	// ma['ế'] = 'e';
-	// ma['ề'] = 'e';
-	// ma['ể'] = 'e';
-	// ma['ễ'] = 'e';
-	// ma['ệ'] = 'e';
-	// ma['ó'] = 'o';
-	// ma['ò'] = 'o';
-	// ma['ỏ'] = 'o';
-	// ma['õ'] = 'o';
-	// ma['ọ'] = 'o';
-	// ma['ô'] = 'o';
-	// ma['ố'] = 'o';
-	// ma['ồ'] = 'o';
-	// ma['ổ'] = 'o';
-	// ma['ỗ'] = 'o';
-	// ma['ộ'] = 'o';
-	// ma['ơ'] = 'o';
-	// ma['ớ'] = 'o';
-	// ma['ờ'] = 'o';
-	// ma['ở'] = 'o';
-	// ma['ỡ'] = 'o';
-	// ma['ợ'] = 'o';
-	// ma['í'] = 'i';
-	// ma['ì'] = 'i';
-	// ma['ỉ'] = 'i';
-	// ma['ĩ'] = 'i';
-	// ma['ị'] = 'i';
-	// ma['ú'] = 'u';
-	// ma['ù'] = 'u';
-	// ma['ủ'] = 'u';
-	// ma['ũ'] = 'u';
-	// ma['ụ'] = 'u';
-	// ma['ư'] = 'u';
-	// ma['ừ'] = 'u';
-	// ma['ứ'] = 'u';
-	// ma['ử'] = 'u';
-	// ma['ữ'] = 'u';
-	// ma['ự'] = 'u';
-	// ma['đ'] = 'd';
-	// ma['ý'] = 'y';
-	// ma['ỳ'] = 'y';
-	// ma['ỷ'] = 'y';
-	// ma['ỹ'] = 'y';
-	// ma['ỵ'] = 'y';
-	// ma['Đ'] = 'D';
+	ma['á'] = 'a';
+	ma['à'] = 'a';
+	ma['ả'] = 'a';
+	ma['ã'] = 'a';
+	ma['ạ'] = 'a';
+	ma['ă'] = 'a';
+	ma['ắ'] = 'a';
+	ma['ằ'] = 'a';
+	ma['ẳ'] = 'a';
+	ma['ẵ'] = 'a';
+	ma['ặ'] = 'a';
+	ma['â'] = 'a';
+	ma['ấ'] = 'a';
+	ma['ầ'] = 'a';
+	ma['ẩ'] = 'a';
+	ma['ẫ'] = 'a';
+	ma['ậ'] = 'a';
+	ma['é'] = 'e';
+	ma['è'] = 'e';
+	ma['ẻ'] = 'e';
+	ma['ẽ'] = 'e';
+	ma['ẹ'] = 'e';
+	ma['ê'] = 'e';
+	ma['ế'] = 'e';
+	ma['ề'] = 'e';
+	ma['ể'] = 'e';
+	ma['ễ'] = 'e';
+	ma['ệ'] = 'e';
+	ma['ó'] = 'o';
+	ma['ò'] = 'o';
+	ma['ỏ'] = 'o';
+	ma['õ'] = 'o';
+	ma['ọ'] = 'o';
+	ma['ô'] = 'o';
+	ma['ố'] = 'o';
+	ma['ồ'] = 'o';
+	ma['ổ'] = 'o';
+	ma['ỗ'] = 'o';
+	ma['ộ'] = 'o';
+	ma['ơ'] = 'o';
+	ma['ớ'] = 'o';
+	ma['ờ'] = 'o';
+	ma['ở'] = 'o';
+	ma['ỡ'] = 'o';
+	ma['ợ'] = 'o';
+	ma['í'] = 'i';
+	ma['ì'] = 'i';
+	ma['ỉ'] = 'i';
+	ma['ĩ'] = 'i';
+	ma['ị'] = 'i';
+	ma['ú'] = 'u';
+	ma['ù'] = 'u';
+	ma['ủ'] = 'u';
+	ma['ũ'] = 'u';
+	ma['ụ'] = 'u';
+	ma['ư'] = 'u';
+	ma['ừ'] = 'u';
+	ma['ứ'] = 'u';
+	ma['ử'] = 'u';
+	ma['ữ'] = 'u';
+	ma['ự'] = 'u';
+	ma['đ'] = 'd';
+	ma['ý'] = 'y';
+	ma['ỳ'] = 'y';
+	ma['ỷ'] = 'y';
+	ma['ỹ'] = 'y';
+	ma['ỵ'] = 'y';
+	ma['Đ'] = 'D';
 }
 
 void Terminal::moveTo(int x, int y) {

@@ -46,7 +46,7 @@ void Paragraph::loadFromRawText(string text) {
 				l = i + 1;
 				started = false;
 			}
-			if (text[i] == '.' && (nxtC == '"' )){//|| nxtC == '“')) {
+			if (text[i] == '.' && (nxtC == '"' || nxtC == '“')) {
 				sentences.push_back(Sentence(text.substr(l, i - l + 1)));
 				l = i + 1;
 				started = false;
