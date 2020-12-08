@@ -6,8 +6,9 @@
 #include <vector>
 #define LEARN 0
 #define PRACTICE 1
-#define ADDWORD 2
-#define ADDPARAGRAPH 3
+#define ADD_WORD 2
+#define ADD_PARAGRAPH 3
+#define ADD_TEMPORARY_WORD 4
 
 struct HistoryDetail {
 	int time;
@@ -29,6 +30,7 @@ public:
 	void addWord(int time, std::string key);
 	void addParagraph(int time, std::string title);
 	void add(HistoryDetail hd);
+	void addTemporaryWord(int time, std::string key);
 	int getFirstTime();
 	int getFirstLearningTime();
 	int getFrequency(std::string key);

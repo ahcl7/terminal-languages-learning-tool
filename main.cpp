@@ -11,6 +11,7 @@
 #include "cons.h"
 #include "rd.h"
 #include "paragraph.h"
+#include "temporary-collection.h"
 #include "ctime"
 #include <iostream>
 #include <unordered_map>
@@ -30,6 +31,7 @@ using namespace std;
 string getDataPath(string language) { return "./data/" + language + "/data.txt"; }
 string getHistoryPath(string language) { return "./data/" + language + "/history.txt"; }
 string getCollectionPath(string language) { return "./data/" + language + "/collection.txt"; }
+string getTemporaryCollectionPath(string language) { return "./data/" + language + "/temporary-collection.txt"; }
 
 
 void showMenu() {
@@ -39,7 +41,10 @@ void showMenu() {
 	cout << "3. Practice" << endl;
 	cout << "4. Enter paragraph" << endl;
 	cout << "5. Show paragraph" << endl;
-	cout << "6. Setting" << endl;
+	cout << "6. Enter new temporary word" << endl;
+	cout << "7. Add word from temporary word list to dictionary" << endl;
+	cout << "8. Setting" << endl;
+	cout << "9. Exit!" << endl;
 }
 
 void clearScreen() {
@@ -80,13 +85,14 @@ Word getRandomWord(Dictionary& dictionary, History& history, Setting& setting) {
 }
 
 
-void loadData(Dictionary& dictionary, History& history, Collection& collection, Setting& setting) {
+void loadData(Dictionary& dictionary, History& history, Collection& collection, TemporaryCollection &temporaryCollection, Setting& setting) {
 	TimeManager timemanager = TimeManager();
 	cout << "Loading data from local...!" << endl;
 	timemanager.start();
 	dictionary.load(getDataPath(setting.language));
 	history.load(getHistoryPath(setting.language));
 	collection.load(getCollectionPath(setting.language));
+	temporaryCollection.load(getTemporaryCollectionPath(setting.language));
 	cout << "Loading done!" << endl;
 	timemanager.end("Loading time: ");
 }
@@ -98,12 +104,18 @@ void save(Dictionary& dictionary, History& history, Setting& setting) {
 	cout << GREEN << "Saved" << RESET << endl;
 }
 
-void addWord(Dictionary& dictionary, History &history, Setting& setting) {
-	string word, meaning, pronounce;
+void addWord(Dictionary& dictionary, History &history, Setting& setting, string word) {
+    if (word == "") {
+        cout << "Enter new word!" << endl;
+    	cout << "Word: "; enterLine(word);
+    	word = Utils::trim(word);
+    } else {
+        cout << "Enter new word!" << endl;
+        cout << "Word: " << word << endl;
+    }
+	string meaning, pronounce;
 	int addedtime = time(0);
 	vector<Example> examples;
-	cout << "Enter new word!" << endl;
-	cout << "Word: "; enterLine(word); word = Utils::trim(word);
 
 	if (dictionary.hasWord(word)) {
 		cout << RED << "This word is already exist! Please enter another word!" << RESET << endl;
@@ -258,7 +270,7 @@ bool checkLanguage(string language) {
 	return true;
 }
 
-void changeSetting(Dictionary& dictionary, History& history, Collection& collection, Setting& setting) {
+void changeSetting(Dictionary& dictionary, History& history, Collection& collection, TemporaryCollection& temporaryCollection, Setting& setting) {
 	while (true) {
 		string command = enterLine();
 		stringstream ss(command);
@@ -295,7 +307,7 @@ void changeSetting(Dictionary& dictionary, History& history, Collection& collect
 				}
 				if (ok) {
 					setting.language = lg;
-					loadData(dictionary, history, collection, setting);
+					loadData(dictionary, history, collection, temporaryCollection, setting);
 				}
 			}
 		}
@@ -359,7 +371,7 @@ void enterParagraph(Dictionary& dictionary, History& history, Collection& collec
 			cout << "Do you want to continue" << RED << " adding new word " << RESET << "in this sentence?(y/yes) ";
 			string response; response = Utils::trim(enterLine());
 			if (response == "y" || response == "yes") {
-				addWord(dictionary, history, setting);
+				addWord(dictionary, history, setting, "");
 			} else break;
 		}
 
@@ -392,21 +404,48 @@ void practiceReading(History& history, Collection& collection) {
 	showParagraph(collection.pList[k - 1]);
 }
 
+void addTemporaryWord(TemporaryCollection &temporaryCollection, History &history, Setting &setting) {
+    while (true) {
+        cout << "Enter temporary word: ";
+        string word = enterLine();
+        temporaryCollection.addTemporaryWord(Word(word, word, time(0)));
+        history.addTemporaryWord(-1, word);
+        temporaryCollection.save(getTemporaryCollectionPath(setting.language));
+        history.save(getHistoryPath(setting.language));
+        cout << "Do you want to add more? ";
+        string response = Utils::toLowerCase(Utils::trim(enterLine()));
+        if (response == "yes" || response == "y" || response == "") {
+            // continue entering
+        } else break;
+    }
+}
+
+void addWordFromTemporaryWordListToDictionary(TemporaryCollection &temporaryCollection, Dictionary &dictionary, History &history, Setting &setting) {
+    if (temporaryCollection.size() > 0) {
+        Word word = temporaryCollection.getRandomWord(ORDER_BY_TIME);
+        addWord(dictionary, history, setting, word.word);
+        temporaryCollection.removeTemporaryWord(word);
+        temporaryCollection.save(getTemporaryCollectionPath(setting.language));
+    } else {
+        cout << RED <<"Temporary word list is empty!" << RESET << endl;
+    }
+}
 
 int main() {
 
 	Dictionary dictionary = Dictionary();
 	History history = History();
 	Collection collection = Collection();
+	TemporaryCollection temporaryCollection = TemporaryCollection();
 	Setting setting = Setting(NLAST, LRATE, LANGUAGE);
-	loadData(dictionary, history, collection, setting);
+	loadData(dictionary, history, collection, temporaryCollection, setting);
 
 	while (true) {
 		showMenu();
-		int k = enterNumber(1, 6);
+		int k = enterNumber(1, 9);
 		if (k == 1) {
 			clearScreen();
-			addWord(dictionary, history, setting);
+			addWord(dictionary, history, setting, "");
 		}
 		if (k == 2) {
 			learn(dictionary, history, setting);
@@ -421,7 +460,16 @@ int main() {
 			practiceReading(history, collection);
 		}
 		if (k == 6) {
-			changeSetting(dictionary, history, collection, setting);
+		    addTemporaryWord(temporaryCollection, history, setting);
+		}
+		if (k == 7) {
+            addWordFromTemporaryWordListToDictionary(temporaryCollection, dictionary, history, setting);
+		}
+		if (k == 8) {
+			changeSetting(dictionary, history, collection, temporaryCollection, setting);
+		}
+		if (k == 9) {
+		    return 0;
 		}
 	}
 	return 0;

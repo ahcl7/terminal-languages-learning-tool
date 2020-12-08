@@ -34,15 +34,18 @@ void History::load(string path) {
 		if (action == LEARN) {
 			learn(time, key);
 		}
-		if (action == ADDWORD) {
+		if (action == ADD_WORD) {
 			addWord(time, key);
 		}
 		if (action == PRACTICE) {
 			practice(time, key);
 		}
-		if (action == ADDPARAGRAPH) {
+		if (action == ADD_PARAGRAPH) {
 			addParagraph(time, key);
 		}
+		if (action == ADD_TEMPORARY_WORD) {
+	        addTemporaryWord(time, key);
+	    }
 	}
 	reader.close();
 }
@@ -60,29 +63,32 @@ void History::save(string path) {
 }
 
 void History::learn(int _time, string key) {
-	if (!~_time) add(HistoryDetail(time(0), LEARN, key));
-	else add(HistoryDetail(_time, LEARN, key));
+	if (!~_time) _time = time(0);
+	add(HistoryDetail(_time, LEARN, key));
 	//do nothing
 }
 
 void History::practice(int _time, string key) {
 	count[key]++;
-	if (!~_time)
-		add(HistoryDetail(time(0), PRACTICE, key));
-	else add(HistoryDetail(_time, PRACTICE, key));
+	if (!~_time) _time = time(0);
+	add(HistoryDetail(_time, PRACTICE, key));
 }
 
 void History::addWord(int _time, string key) {
-	if (!~_time) 
-		add(HistoryDetail(time(0), ADDWORD, key));
-	else add(HistoryDetail(_time, ADDWORD, key));
+	if (!~_time) _time = time(0);
+    add(HistoryDetail(_time, ADD_WORD, key));
 }
 
 void History::addParagraph(int _time, string title) {
-	if (!~_time) 
-		add(HistoryDetail(time(0), ADDPARAGRAPH, title));
-	else add(HistoryDetail(_time, ADDPARAGRAPH, title));	
+	if (!~_time) _time = time(0);
+	add(HistoryDetail(_time, ADD_PARAGRAPH, title));
 }
+
+void History::addTemporaryWord(int _time, string key) {
+    if (!~_time) _time = time(0);
+    add(HistoryDetail(_time, ADD_TEMPORARY_WORD, key));
+}
+
 int History::getFirstTime() {
 	if (history.size() == 0) return -1;
 	return history[0].time;
@@ -91,7 +97,7 @@ int History::getFirstTime() {
 int History::getFirstLearningTime() {
 	if (history.size() == 0) return -1;
 	for(auto h:history) {
-		if (h.action != ADDWORD) return h.time;
+		if (h.action != ADD_WORD) return h.time;
 	}
 	return -1;
 }
